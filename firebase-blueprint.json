@@ -1,0 +1,827 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "Administrator role record for school management access control.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Firebase Auth UID of the administrator."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 120,
+          "description": "Verified email address of the administrator."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["headmaster", "admin", "teacher"],
+          "minLength": 5,
+          "maxLength": 20,
+          "description": "Administrative role level."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of creation."
+        }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Student profile, ID card number, tuition fee summary, attendance rate, and academic standing.",
+      "type": "object",
+      "properties": {
+        "rollNo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Class roll number of the student."
+        },
+        "idCardNo": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 32,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Unique student ID card number used for portal login."
+        },
+        "nameBn": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Student full name in Bengali."
+        },
+        "nameEn": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Student full name in English."
+        },
+        "className": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "Class level (e.g., Play, Nursery, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten)."
+        },
+        "section": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "description": "Class section (e.g., Shapla, Golap, A, B)."
+        },
+        "guardianName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Parent or legal guardian name."
+        },
+        "guardianPhone": {
+          "type": "string",
+          "minLength": 6,
+          "maxLength": 20,
+          "pattern": "^[0-9+\\-]+$",
+          "description": "Guardian contact phone number."
+        },
+        "monthlyFee": {
+          "type": "number",
+          "description": "Monthly tuition fee in BDT."
+        },
+        "totalFee": {
+          "type": "number",
+          "description": "Total payable tuition and session fees in BDT."
+        },
+        "paidAmount": {
+          "type": "number",
+          "description": "Total fees paid so far in BDT."
+        },
+        "dueAmount": {
+          "type": "number",
+          "description": "Remaining unpaid fee balance in BDT."
+        },
+        "attendanceRate": {
+          "type": "number",
+          "description": "Overall attendance percentage (0 to 100)."
+        },
+        "gpa": {
+          "type": "number",
+          "description": "Current cumulative GPA (0.00 to 5.00)."
+        },
+        "meritPosition": {
+          "type": "number",
+          "description": "Class merit rank."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "graduated", "transferred"],
+          "minLength": 6,
+          "maxLength": 20,
+          "description": "Enrollment status."
+        },
+        "authorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the teacher/admin managing this record."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation server timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update server timestamp."
+        }
+      },
+      "required": [
+        "rollNo",
+        "idCardNo",
+        "nameBn",
+        "nameEn",
+        "className",
+        "section",
+        "guardianName",
+        "guardianPhone",
+        "monthlyFee",
+        "totalFee",
+        "paidAmount",
+        "dueAmount",
+        "attendanceRate",
+        "gpa",
+        "meritPosition",
+        "status",
+        "authorId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Tuition and school fee payment transaction via bKash, Nagad, Rocket, or Cash.",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Reference ID of the student."
+        },
+        "rollNo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Student roll number."
+        },
+        "studentName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Student display name."
+        },
+        "className": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "Student class."
+        },
+        "amount": {
+          "type": "number",
+          "description": "Paid amount in BDT."
+        },
+        "method": {
+          "type": "string",
+          "enum": ["bkash", "nagad", "rocket", "cash"],
+          "minLength": 4,
+          "maxLength": 15,
+          "description": "Payment gateway used."
+        },
+        "walletNumber": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 25,
+          "pattern": "^[0-9+*\\-]+$",
+          "description": "Masked or full mobile banking number."
+        },
+        "transactionId": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 64,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Gateway transaction reference ID."
+        },
+        "month": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60,
+          "description": "Billing month or fee description."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["completed", "refunded"],
+          "minLength": 6,
+          "maxLength": 15,
+          "description": "Terminal transaction status."
+        },
+        "payerUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the user who initiated the payment."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Payment timestamp."
+        }
+      },
+      "required": [
+        "studentId",
+        "rollNo",
+        "studentName",
+        "className",
+        "amount",
+        "method",
+        "walletNumber",
+        "transactionId",
+        "month",
+        "status",
+        "payerUid",
+        "createdAt"
+      ]
+    },
+    "Notice": {
+      "title": "Notice",
+      "description": "Official school notice and push notification announcement.",
+      "type": "object",
+      "properties": {
+        "titleBn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200,
+          "description": "Notice title in Bengali."
+        },
+        "titleEn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 200,
+          "description": "Notice title in English."
+        },
+        "contentBn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2000,
+          "description": "Full notice body in Bengali."
+        },
+        "contentEn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2000,
+          "description": "Full notice body in English."
+        },
+        "category": {
+          "type": "string",
+          "enum": ["academic", "exam", "fee", "holiday", "general"],
+          "minLength": 3,
+          "maxLength": 20,
+          "description": "Notice classification."
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["normal", "important", "urgent"],
+          "minLength": 6,
+          "maxLength": 15,
+          "description": "Urgency level."
+        },
+        "dateStr": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 30,
+          "description": "Formatted publication date."
+        },
+        "authorName": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100,
+          "description": "Name of publishing teacher/headmaster."
+        },
+        "authorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of notice creator."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp."
+        }
+      },
+      "required": [
+        "titleBn",
+        "titleEn",
+        "contentBn",
+        "contentEn",
+        "category",
+        "priority",
+        "dateStr",
+        "authorName",
+        "authorId",
+        "createdAt"
+      ]
+    },
+    "Attendance": {
+      "title": "Attendance",
+      "description": "Daily attendance record for a student.",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Student document ID."
+        },
+        "rollNo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Student roll number."
+        },
+        "studentName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Student name."
+        },
+        "className": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "Class name."
+        },
+        "date": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 20,
+          "pattern": "^[0-9\\-]+$",
+          "description": "ISO date string YYYY-MM-DD."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["present", "absent", "late", "leave"],
+          "minLength": 4,
+          "maxLength": 15,
+          "description": "Attendance status."
+        },
+        "markedByUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the teacher who recorded attendance."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp."
+        }
+      },
+      "required": [
+        "studentId",
+        "rollNo",
+        "studentName",
+        "className",
+        "date",
+        "status",
+        "markedByUid",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Result": {
+      "title": "Result",
+      "description": "Academic result card and guardian progress report for a student.",
+      "type": "object",
+      "properties": {
+        "studentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Student ID."
+        },
+        "rollNo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Student roll number."
+        },
+        "studentNameBn": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Student name in Bengali."
+        },
+        "studentNameEn": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Student name in English."
+        },
+        "className": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "Class name."
+        },
+        "examTitle": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 100,
+          "description": "Term examination name."
+        },
+        "bangla": {
+          "type": "number",
+          "description": "Marks obtained in Bangla (0-100)."
+        },
+        "english": {
+          "type": "number",
+          "description": "Marks obtained in English (0-100)."
+        },
+        "math": {
+          "type": "number",
+          "description": "Marks obtained in Mathematics (0-100)."
+        },
+        "science": {
+          "type": "number",
+          "description": "Marks obtained in General Science (0-100)."
+        },
+        "bgs": {
+          "type": "number",
+          "description": "Marks obtained in Bangladesh & Global Studies (0-100)."
+        },
+        "religion": {
+          "type": "number",
+          "description": "Marks obtained in Religion & Moral Education (0-100)."
+        },
+        "ict": {
+          "type": "number",
+          "description": "Marks obtained in ICT (0-100)."
+        },
+        "totalMarks": {
+          "type": "number",
+          "description": "Total marks across all subjects."
+        },
+        "gpa": {
+          "type": "number",
+          "description": "Calculated GPA out of 5.00."
+        },
+        "grade": {
+          "type": "string",
+          "enum": ["A+", "A", "A-", "B", "C", "D", "F"],
+          "minLength": 1,
+          "maxLength": 5,
+          "description": "Final letter grade."
+        },
+        "teacherRemarksBn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 500,
+          "description": "Class teacher evaluation comment in Bengali."
+        },
+        "teacherRemarksEn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 500,
+          "description": "Class teacher evaluation comment in English."
+        },
+        "homeworkScore": {
+          "type": "number",
+          "description": "Homework completion rate (0-100)."
+        },
+        "behaviorScore": {
+          "type": "number",
+          "description": "Discipline and co-curricular score (0-100)."
+        },
+        "authorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of teacher who published the result."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp."
+        }
+      },
+      "required": [
+        "studentId",
+        "rollNo",
+        "studentNameBn",
+        "studentNameEn",
+        "className",
+        "examTitle",
+        "bangla",
+        "english",
+        "math",
+        "science",
+        "bgs",
+        "religion",
+        "ict",
+        "totalMarks",
+        "gpa",
+        "grade",
+        "teacherRemarksBn",
+        "teacherRemarksEn",
+        "homeworkScore",
+        "behaviorScore",
+        "authorId",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Exam": {
+      "title": "Exam",
+      "description": "Online MCQ examination definition.",
+      "type": "object",
+      "properties": {
+        "titleBn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 150,
+          "description": "Exam title in Bengali."
+        },
+        "titleEn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 150,
+          "description": "Exam title in English."
+        },
+        "subjectBn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 80,
+          "description": "Subject name in Bengali."
+        },
+        "subjectEn": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 80,
+          "description": "Subject name in English."
+        },
+        "className": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "Target class."
+        },
+        "durationMinutes": {
+          "type": "number",
+          "description": "Duration in minutes."
+        },
+        "totalMarks": {
+          "type": "number",
+          "description": "Maximum marks."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["published", "archived"],
+          "minLength": 8,
+          "maxLength": 15,
+          "description": "Availability status."
+        },
+        "authorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of exam creator."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        }
+      },
+      "required": [
+        "titleBn",
+        "titleEn",
+        "subjectBn",
+        "subjectEn",
+        "className",
+        "durationMinutes",
+        "totalMarks",
+        "status",
+        "authorId",
+        "createdAt"
+      ]
+    },
+    "ExamAttempt": {
+      "title": "ExamAttempt",
+      "description": "Student submission and score for an online examination.",
+      "type": "object",
+      "properties": {
+        "examId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Exam ID."
+        },
+        "examTitle": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 150,
+          "description": "Exam title."
+        },
+        "rollNo": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 20,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Student roll number."
+        },
+        "studentName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Student name."
+        },
+        "className": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40,
+          "description": "Student class."
+        },
+        "score": {
+          "type": "number",
+          "description": "Obtained score."
+        },
+        "totalMarks": {
+          "type": "number",
+          "description": "Total possible marks."
+        },
+        "percentage": {
+          "type": "number",
+          "description": "Score percentage (0-100)."
+        },
+        "studentUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of the user who submitted the exam."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Submission timestamp."
+        }
+      },
+      "required": [
+        "examId",
+        "examTitle",
+        "rollNo",
+        "studentName",
+        "className",
+        "score",
+        "totalMarks",
+        "percentage",
+        "studentUid",
+        "createdAt"
+      ]
+    },
+    "SupportMessage": {
+      "title": "SupportMessage",
+      "description": "Live customer and guardian support chat message.",
+      "type": "object",
+      "properties": {
+        "senderUid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "UID of message sender."
+        },
+        "senderName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Display name of sender."
+        },
+        "senderRole": {
+          "type": "string",
+          "enum": ["guardian", "student", "teacher", "admin"],
+          "minLength": 5,
+          "maxLength": 15,
+          "description": "Role of sender."
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "description": "Support message text."
+        },
+        "replyText": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 1000,
+          "description": "Automated or admin reply text."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["open", "resolved"],
+          "minLength": 4,
+          "maxLength": 15,
+          "description": "Ticket status."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Update timestamp."
+        }
+      },
+      "required": [
+        "senderUid",
+        "senderName",
+        "senderRole",
+        "text",
+        "replyText",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/Admin" },
+      "description": "Administrator role assignments."
+    },
+    "/students/{studentId}": {
+      "schema": { "$ref": "#/entities/Student" },
+      "description": "Student directory, tuition fee balances, and academic metrics."
+    },
+    "/payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/Payment" },
+      "description": "Tuition fee payment receipts via bKash, Nagad, and Rocket."
+    },
+    "/notices/{noticeId}": {
+      "schema": { "$ref": "#/entities/Notice" },
+      "description": "Official school notices and notifications."
+    },
+    "/attendance/{attendanceId}": {
+      "schema": { "$ref": "#/entities/Attendance" },
+      "description": "Daily student attendance records."
+    },
+    "/results/{resultId}": {
+      "schema": { "$ref": "#/entities/Result" },
+      "description": "Student exam marksheets and guardian progress reports."
+    },
+    "/exams/{examId}": {
+      "schema": { "$ref": "#/entities/Exam" },
+      "description": "Online MCQ examination definitions."
+    },
+    "/examAttempts/{attemptId}": {
+      "schema": { "$ref": "#/entities/ExamAttempt" },
+      "description": "Student online examination submissions."
+    },
+    "/supportMessages/{messageId}": {
+      "schema": { "$ref": "#/entities/SupportMessage" },
+      "description": "Live chat support messages from guardians and students."
+    }
+  }
+}

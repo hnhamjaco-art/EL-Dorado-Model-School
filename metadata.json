@@ -1,0 +1,8 @@
+{
+  "name": "Remix El Dorado Model School Management System",
+  "description": "এল ডরাডো মডেল স্কুল — Bilingual (Bangla \u0026 English) School Management System with Roll-Based Tuition Fee Lookup, bKash/Nagad/Rocket Payment Gateway, Attendance, Guardian Progress Reports, Online Exams, Result Cards, Offline Database \u0026 2FA Security.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
